@@ -1,0 +1,51 @@
+## RockApp Deployment Roadmap
+
+### 1. Asset Bundling & Code Preparation
+
+* **Bundle ML Model & Labels**: Add `rock_classifier.tflite` and `labels.txt` into the app’s assets folder and update `react-native.config.js` (or `expo.assets`) accordingly.
+* **Code Modularization**: Refactor services (`mlModel.js`, `api.js`) for clear separation of concerns; expose initialization and inference hooks for web embedding.
+* **Environment Config**: Create `.env` or config file for API base URL and keys; integrate `react-native-dotenv` or similar.
+
+### 2. Backend API Provisioning
+
+* **Design REST Schema**: Define endpoints, request/response JSON (e.g., GET `/rocks?name={label}` → `{ properties, origin, facts }`).
+* **Database Setup**: Choose a managed DB (e.g., MongoDB Atlas, DynamoDB); seed with your rock dataset.
+* **Deploy Service**: Containerize (Docker) or deploy to a serverless platform (AWS Lambda, Google Cloud Run, Heroku) behind HTTPS.
+* **API Security**: Require an API key or OAuth token; implement rate limiting and CORS.
+
+### 3. CI/CD & Version Control
+
+* **Git Repo**: Push code to GitHub/GitLab, apply branching strategy (e.g., `main`, `dev`).
+* **Automated Testing**: Write unit tests for services, snapshot tests for UI components.
+* **Pipeline**: Configure GitHub Actions (or similar) to run lint, tests, and build on each PR.
+* **Deployment Automation**: On merges to `dev`, auto-deploy to staging; on `main`, deploy production.
+
+### 4. Web Embedding & Trial Setup
+
+* **Web Build**: Use React Native Web or Expo Web to compile the app for browser usage.
+* **Embed on Website**: Add the web build to a subdirectory (e.g., `/rockapp`) and integrate a launch button or iframe on your site.
+* **Test Harness**: Build a simple page with camera permission flow and display area to validate ML and API responses in-browser.
+
+### 5. Testing & Quality Assurance
+
+* **Cross-Device Manual QA**: Test on iOS, Android, and major browsers; verify camera access, performance, and error handling.
+* **Automated E2E**: Use Detox (mobile) or Cypress (web) to automate common user flows (capture → classify → display).
+* **Feedback Collection**: Embed a feedback form or analytics event tracking to gather user impressions and error reports.
+
+### 6. Polish & Premium Features
+
+* **Subscription Flow**: Integrate Stripe (or comparable) for in-app purchases; gate advanced features (offline DB, extended dataset) behind premium tier.
+* **UI/UX Refinement**: Apply polished branding, animations (Framer Motion / Reanimated), and responsive layouts.
+* **Offline Mode**: Implement data caching and background sync for field use with limited connectivity.
+
+### 7. Store Submission & Marketing
+
+* **Mobile Packaging**: Generate app icons, splash screens; bump versions; configure App Store / Play Store metadata.
+* **Submission Process**: Follow guidelines for Apple and Google reviews, supply privacy policy and educational category.
+* **Landing Page**: Create a marketing section on your website with feature highlights, tutorial video, and download links.
+
+### 8. Monitoring & Iteration
+
+* **Analytics**: Integrate tools (Firebase Analytics, Sentry) to track usage patterns and crashes.
+* **Performance Monitoring**: Track API response times and inference latency; optimize model or scale backend as needed.
+* **Roadmap Updates**: Based on usage data and user feedback, plan next feature sprints (AR overlays, community contributions, advanced filtering).
